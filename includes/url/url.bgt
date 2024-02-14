@@ -1,0 +1,47 @@
+/*
+*URL class.
+*
+by harry min khant.
+*
+
+*description:
+*
+*this class holds the url to get, and url to post, into the getfile.php or putfile.php.
+*If you are going to modify the php scripts, make sure that you link back to correct url which supports http to work exactly.
+*
+
+*what this class is for?
+*
+*this class insures that your URLS (no madder http or https) to work since the bgt http object only supports http.
+*
+
+* note. you need to place putfile and getfile php scripts to the server where http is supported.
+*/
+class url
+{
+int error=0;
+string reason="";
+private string getfile="http://harrymk.xp3.biz/getfile.php";
+private string putfile="http://harrymk.xp3.biz/putfile.php";
+void reset()
+{
+this.error=0;
+this.reason="";
+}
+string get(string urlname)
+{
+this.reset();
+string urlurlname=url_post(this.getfile,"url="+url_encode(urlname));
+this.error=get_last_error();
+this.reason=get_last_error_text();
+return urlurlname;
+}
+string post(string urlname,string urlcontent)
+{
+this.reset();
+string urlurlname=url_post(this.putfile,"url="+urlname+"&content="+urlcontent);
+this.error=get_last_error();
+this.reason=get_last_error_text();
+return urlurlname;
+}
+}

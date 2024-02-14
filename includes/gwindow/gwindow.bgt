@@ -1,0 +1,545 @@
+//harry min khant. this line is not able to modify
+//gwindow
+class gwindow
+{
+string window_title;
+private library tl; //cannot use out of the class
+string tl_path="libs/terlark.dat";
+gwindow()
+{
+this.reset();
+}
+void reset()
+{
+this.window_title="";
+if(this.tl.active) this.tl.unload();
+if(this.tl_path!="") this.tl.load(this.tl_path);
+}
+bool show(string t)
+{
+bool done=show_game_window(t);
+if(done) this.window_title=t;
+return done;
+}
+bool initialise(string t)
+{
+bool done=show_game_window(t);
+if(done) this.window_title=t;
+return done;
+}
+bool hide()
+{
+return hide_game_window();
+}
+bool is_focused_window()
+{
+return is_game_window_active();
+}
+string input(string title,string text,string deftext="")
+{
+return input_box(title,text,deftext);
+}
+bool admin()
+{
+return is_admin();
+}
+bool print(string title,string t)
+{
+return alert(title,t);
+}
+void sleep(double ms=5)
+{
+timer waittimer;
+while(true)
+{
+if(waittimer.elapsed>ms)
+{
+waittimer.restart();
+break;
+}
+wait(5);
+}
+}//end.sleep
+void message(string title,string message)
+{
+library libdall;
+libdall.load("user32.dll");
+libdall.call("int MessageBoxA(int,char*,char*,int);",0,message,title,0x00000050);
+libdall.unload();
+}
+double rand(double from,double to)
+{
+return random(from,to);
+}
+void close_program()
+{
+this.reset();
+exit();
+}
+bool execute(string filename, string command_line, bool wait_for_completion, bool background)
+{
+return run(filename, command_line, wait_for_completion, background);
+}//run
+int tl_alert(string title, string text, bool allow_cancel=false)
+{
+if(!this.tl.active) return 0;
+int ret=-1;
+dictionary@ result=this.tl.call("int dlg_alert(char*, char*, int);", title, text, allow_cancel);
+result.get("0", ret);
+return ret;
+}
+
+int tl_information(string title, string text, bool allow_cancel=false)
+{
+if(!this.tl.active) return 0;
+int ret=-1;
+dictionary@ result=this.tl.call("int dlg_information(char*, char*, int);", title, text, allow_cancel);
+result.get("0", ret);
+return ret;
+}
+
+int tl_question(string title, string text, bool allow_cancel=false)
+{
+if(!this.tl.active) return 0;
+int ret=-1;
+dictionary@ result=this.tl.call("int dlg_question(char*, char*, int);", title, text, allow_cancel);
+result.get("0", ret);
+return ret;
+}
+
+int tl_error(string title, string text, bool allow_cancel=false)
+{
+if(!this.tl.active) return 0;
+int ret=-1;
+dictionary@ result=this.tl.call("int dlg_error(char*, char*, int);", title, text, allow_cancel);
+result.get("0", ret);
+return ret;
+}
+
+int tl_critical(string title, string text, bool allow_cancel=false)
+{
+if(!this.tl.active) return 0;
+int ret=-1;
+dictionary@ result=this.tl.call("int dlg_critical(char*, char*, int);", title, text, allow_cancel);
+result.get("0", ret);
+return ret;
+}
+
+int tl_failure(string title, string text, bool allow_ignore=true)
+{
+if(!this.tl.active) return 0;
+int ret=-1;
+dictionary@ result=this.tl.call("int dlg_failure(char*, char*, int);", title, text, allow_ignore);
+result.get("0", ret);
+return ret;
+}
+
+bool tl_beep_alert()
+{
+if(!this.tl.active) return false;
+this.tl.call("void dlg_beep_alert();");
+return true;
+}
+
+bool tl_beep_information()
+{
+if(!this.tl.active) return false;
+this.tl.call("void dlg_beep_information();");
+return true;
+}
+
+bool tl_beep_question()
+{
+if(!this.tl.active) return false;
+this.tl.call("void dlg_beep_question();");
+return true;
+}
+
+bool tl_beep_error()
+{
+if(!this.tl.active) return false;
+this.tl.call("void dlg_beep_error();");
+return true;
+}
+
+bool tl_beep_critical()
+{
+if(!this.tl.active) return false;
+this.tl.call("void dlg_beep_critical();");
+return true;
+}
+
+string[] tl_open(string title="Open file", string filter="All files (*.*)|*.*", bool allow_multiselect=true)
+{
+string[] empty;
+if(!this.tl.active) return empty;
+int multi=0;
+if(allow_multiselect) multi=1;
+dictionary@ result=this.tl.call("char* dlg_open(char*, char*, int);", title, filter, multi);
+int filename=-1;
+result.get("0", filename);
+string name=string_create_from_pointer(filename, 0);
+if(name=="") return empty;
+return string_split(name, "\r\n", false);
+}
+
+string tl_save(string title="Save file", string filter="All files (*.*)|*.*")
+{
+if(!this.tl.active) return "";
+dictionary@ result=this.tl.call("char* dlg_save(char*, char*);", title, filter);
+int filename=-1;
+result.get("0", filename);
+string name=string_create_from_pointer(filename, 0);
+return name;
+}
+
+bool tl_newdir(string directory)
+{
+if(!this.tl.active) return false;
+int ret=-1;
+dictionary@ result=this.tl.call("int directory_create(char*);", directory);
+result.get("0", ret);
+if(ret==0) return false;
+return true;
+}
+
+bool tl_changedir(string directory)
+{
+if(!this.tl.active) return false;
+int ret=-1;
+dictionary@ result=this.tl.call("int directory_change(char*);", directory);
+result.get("0", ret);
+if(ret==0) return false;
+return true;
+}
+
+string directory_locate_current()
+{
+if(!this.tl.active) return "";
+int ret=-1;
+dictionary@ result=this.tl.call("char* directory_locate_current();");
+result.get("0", ret);
+return string_create_from_pointer(ret, 0);
+}
+
+string directory_locate_system()
+{
+if(!this.tl.active) return "";
+int ret=-1;
+dictionary@ result=this.tl.call("char* directory_locate_system();");
+result.get("0", ret);
+return string_create_from_pointer(ret, 0);
+}
+
+string directory_locate_windows()
+{
+if(!this.tl.active) return "";
+int ret=-1;
+dictionary@ result=this.tl.call("char* directory_locate_windows();");
+result.get("0", ret);
+return string_create_from_pointer(ret, 0);
+}
+
+bool drive_set_label(string drive, string label)
+{
+if(!this.tl.active) return false;
+int ret=-1;
+dictionary@ result=this.tl.call("int drive_set_label(char*, char*);", drive, label);
+result.get("0", ret);
+if(ret==0) return false;
+return true;
+}
+
+string drive_get_label(string drive)
+{
+if(!this.tl.active) return "";
+int ret=-1;
+dictionary@ result=this.tl.call("char* drive_get_label(char*);", drive);
+result.get("0", ret);
+return string_create_from_pointer(ret, 0);
+}
+
+string drive_get_type(string drive)
+{
+if(!this.tl.active) return "";
+int ret=-1;
+dictionary@ result=this.tl.call("char* drive_get_type(char*);", drive);
+result.get("0", ret);
+return string_create_from_pointer(ret, 0);
+}
+
+string drive_get_file_system(string drive)
+{
+if(!this.tl.active) return "";
+int ret=-1;
+dictionary@ result=this.tl.call("char* drive_get_file_system(char*);", drive);
+result.get("0", ret);
+return string_create_from_pointer(ret, 0);
+}
+
+int drive_get_bytes_per_sector(string drive)
+{
+if(!this.tl.active) return -1;
+int ret=-1;
+dictionary@ result=this.tl.call("int drive_get_bytes_per_sector(char*);", drive);
+result.get("0", ret);
+return ret;
+}
+
+int drive_get_sectors_per_cluster(string drive)
+{
+if(!this.tl.active) return -1;
+int ret=-1;
+dictionary@ result=this.tl.call("int drive_get_sectors_per_cluster(char*);", drive);
+result.get("0", ret);
+return ret;
+}
+
+double drive_get_free_space(string drive)
+{
+if(!this.tl.active) return -1;
+double ret=-1;
+dictionary@ result=this.tl.call("double drive_get_free_space(char*);", drive);
+result.get("0", ret);
+return ret;
+}
+
+double drive_get_total_capacity(string drive)
+{
+if(!this.tl.active) return -1;
+double ret=-1;
+dictionary@ result=this.tl.call("double drive_get_total_capacity(char*);", drive);
+result.get("0", ret);
+return ret;
+}
+
+int drive_get_volume_serial(string drive)
+{
+if(!this.tl.active) return -1;
+int ret=-1;
+dictionary@ result=this.tl.call("int drive_get_volume_serial(char*);", drive);
+result.get("0", ret);
+return ret;
+}
+
+string[] drive_get_drives()
+{
+string[] empty;
+if(!this.tl.active) return empty;
+int ret=-1;
+dictionary@ result=this.tl.call("char* drive_get_drives();");
+result.get("0", ret);
+string raw=string_create_from_pointer(ret);
+return string_split(raw, "\r\n", false);
+}
+
+bool file_create(string filename, bool create_directories=true)
+{
+if(!this.tl.active) return false;
+int ret=-1;
+dictionary@ result=this.tl.call("int file_create(char*, int);", filename, create_directories);
+result.get("0", ret);
+if(ret==0) return false;
+return true;
+}
+
+bool file_move(string source, string destination, bool overwrite=false)
+{
+if(!this.tl.active) return false;
+int ret=-1;
+dictionary@ result=this.tl.call("int file_move(char*, char*, int);", source, destination, overwrite);
+result.get("0", ret);
+if(ret==0) return false;
+return true;
+}
+
+string file_get_full_path(string filename)
+{
+if(!this.tl.active) return "";
+int ret=-1;
+dictionary@ result=this.tl.call("char* file_get_full_path(char*);", filename);
+result.get("0", ret);
+return string_create_from_pointer(ret, 0);
+}
+
+string file_get_short_path(string filename)
+{
+if(!this.tl.active) return "";
+int ret=-1;
+dictionary@ result=this.tl.call("char* file_get_short_path(char*);", filename);
+result.get("0", ret);
+return string_create_from_pointer(ret, 0);
+}
+
+string filestring_get_path(string filename)
+{
+if(!this.tl.active) return "";
+int ret=-1;
+dictionary@ result=this.tl.call("char* filestring_get_path(char*);", filename);
+result.get("0", ret);
+return string_create_from_pointer(ret, 0);
+}
+
+string filestring_get_domain(string filename)
+{
+if(!this.tl.active) return "";
+int ret=-1;
+dictionary@ result=this.tl.call("char* filestring_get_domain(char*);", filename);
+result.get("0", ret);
+return string_create_from_pointer(ret, 0);
+}
+
+string filestring_get_location(string filename)
+{
+if(!this.tl.active) return "";
+int ret=-1;
+dictionary@ result=this.tl.call("char* filestring_get_location(char*);", filename);
+result.get("0", ret);
+return string_create_from_pointer(ret, 0);
+}
+
+string filestring_get_extension(string filename)
+{
+if(!this.tl.active) return "";
+int ret=-1;
+dictionary@ result=this.tl.call("char* filestring_get_extension(char*);", filename);
+result.get("0", ret);
+return string_create_from_pointer(ret, 0);
+}
+
+string filestring_get_filename(string filename)
+{
+if(!this.tl.active) return "";
+int ret=-1;
+dictionary@ result=this.tl.call("char* filestring_get_filename(char*);", filename);
+result.get("0", ret);
+return string_create_from_pointer(ret, 0);
+}
+
+int battery_percent()
+{
+if(!this.tl.active) return -2;
+dictionary@ result=this.tl.call("int power_battery_percent();");
+int res=-1;
+result.get("0", res);
+return res;
+}
+
+int power_battery_estimated_remaining_time()
+{
+if(!this.tl.active) return -2;
+dictionary@ result=this.tl.call("int power_battery_estimated_remaining_time();");
+int res=-1;
+result.get("0", res);
+return res;
+}
+
+int power_battery_estimated_total_time()
+{
+if(!this.tl.active) return -2;
+dictionary@ result=this.tl.call("int power_battery_estimated_total_time();");
+int res=-1;
+result.get("0", res);
+return res;
+}
+
+bool power_battery_exists()
+{
+if(!this.tl.active) return false;
+dictionary@ result=this.tl.call("int power_battery_exists();");
+int res=0;
+result.get("0", res);
+if(res==0) return false;
+return true;
+}
+
+bool power_battery_charging()
+{
+if(!this.tl.active) return false;
+dictionary@ result=this.tl.call("int power_battery_charging();");
+int res=0;
+result.get("0", res);
+if(res==0) return false;
+return true;
+}
+
+bool power_connected()
+{
+if(!this.tl.active) return false;
+dictionary@ result=this.tl.call("int power_connected();");
+int res=0;
+result.get("0", res);
+if(res==0) return false;
+return true;
+}
+
+//Experimental functions
+
+int gui_create_window(string title, bool system_menu=true)
+{
+if(!this.tl.active) return 0;
+int ret=-1;
+dictionary@ result=this.tl.call("int gui_create_window(char*, int);", title, system_menu);
+result.get("0", ret);
+return ret;
+}
+
+bool gui_show()
+{
+if(!this.tl.active) return false;
+int ret=-1;
+dictionary@ result=this.tl.call("int gui_show();");
+result.get("0", ret);
+if(ret==0) return false;
+return true;
+}
+
+bool system_shutdown(bool force=false, bool powerdown=true)
+{
+if(!this.tl.active) return false;
+int ret=-1;
+dictionary@ result=this.tl.call("int system_shutdown(int, int);", force, powerdown);
+result.get("0", ret);
+if(ret==0) return false;
+return true;
+}
+
+bool system_reboot(bool force=false)
+{
+if(!this.tl.active) return false;
+int ret=-1;
+dictionary@ result=this.tl.call("int system_reboot(int);", force);
+result.get("0", ret);
+if(ret==0) return false;
+return true;
+}
+
+bool system_logoff(bool force=false)
+{
+if(!this.tl.active) return false;
+int ret=-1;
+dictionary@ result=this.tl.call("int system_logoff(int);", force);
+result.get("0", ret);
+if(ret==0) return false;
+return true;
+}
+
+bool ftp_connect(string host, string username, string password, int port=21, bool passive=true)
+{
+if(!this.tl.active) return false;
+int ret=-1;
+dictionary@ result=this.tl.call("int ftp_connect(char*, char*, char*, int, int);", host, username, password, port, passive);
+result.get("0", ret);
+if(ret==0) return false;
+return true;
+}
+bool ftp_upload(string local_file, string remote_file, bool overwrite=false)
+{
+if(!this.tl.active) return false;
+int ret=-1;
+dictionary@ result=this.tl.call("int ftp_upload(char*, char*, int);", local_file, remote_file, overwrite);
+result.get("0", ret);
+if(ret==0) return false;
+return true;
+}
+}//end.class

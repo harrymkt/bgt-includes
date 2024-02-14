@@ -1,0 +1,80 @@
+/*
+translation class.
+this class is useful to integrate translation into your game.
+the lang folder will have to be created.
+by default, a folder lang is used. however, you can change it by setting the property lfolder.
+the language extention is .lng, but you can change it with the property lex.
+*/
+class translator
+{
+//the languages folder.
+string lfolder="lang";
+
+//the language extention.
+string lex=".lng";
+private string langdata, langname="english";
+void refresh(string l, string folder="", string ex="")
+{
+if(folder=="") folder=this.lfolder;
+if(ex=="") ex=this.lex;
+if(l=="") return;
+if(l=="english" || l=="eng") return;
+if(this.lfolder!=folder) this.lfolder=folder;
+if(this.lex!=ex) this.lex=ex;
+file f;
+f.open(this.lfolder+"/"+l+""+this.lex+"","r");
+string ldd=f.read();
+f.close();
+this.langdata=ldd;
+this.langname=l;
+}
+string translate(string l, string text, string firstr="", string secondr="")
+{
+if(l!=this.langname) this.refresh(l);
+string c=this.langdata;
+if(c=="") c=text;
+string[] lines=string_split(c,"\r\n",false);
+if(lines.length()>0)
+{
+for(uint i=0; i<lines.length();i++)
+{
+string[] t=string_split(lines[i],"=",false);
+if(t.length()<2) continue;
+if(string_contains(text,t[0],1)>-1) text=string_replace(text,t[0],t[1],true);
+}
+}
+if(firstr=="" || secondr=="") return text;
+string[] fir=string_split(firstr," ",false);
+string[] sec=string_split(secondr,"```=```",true);
+if(fir.length()!=sec.length()) return text;
+for(uint b=0;b<fir.length();b++)
+{
+if(string_contains(text,fir[b],1)>-1) text=string_replace(text,fir[b],sec[b],true);
+}
+return text;
+}
+string get_flag(string l="")
+{
+if(l=="") l=this.langname;
+if(l=="") return"";
+if(l=="eng"||l=="english") return"🇺🇸";
+string[] lines;
+if(this.langname!=l)
+{
+file f;
+f.open(this.lfolder+"/"+l+""+this.lex+"","r");
+lines=string_split(f.read(),"\r\n",false);
+f.close();
+}
+else
+{
+lines=string_split(this.langdata,"\r\n",false);
+}
+for(uint i=0;i<lines.length();i++)
+{
+string[] d=string_split(lines[i],":",false);
+if(d[0]=="flag" && d.length()>1) return ""+d[1];
+}//i
+return"";
+}
+}//endclass

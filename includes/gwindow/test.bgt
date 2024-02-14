@@ -1,0 +1,44 @@
+/*
+*this file or script is created by harry min khant
+*each line is explained. the comment is first, the code then displays after it.
+*/
+
+//include the class file
+#include"gwindow.bgt"
+//declare the class gwindow, at this point we give the name to window, but you might change it.
+gwindow window;
+//start the main and a left brace.
+void main()
+{
+//sends out the intro message with .message function, with a title and the text.
+window.tl_beep_alert();
+window.tl_alert("hello","this program is designed to test the gwindow functions. press the a key to see the alert function, press the t key to view the message function which uses the library. press e to exit. press b to check battery.");
+//show the game window through .show function.
+window.show("test");
+//check for key presses.
+while(true)
+{
+// In the next line, we use the .sleep function without any given parameter. However, you can optionally specify the number of milliseconds for how long the sleep should last. This function is similar to the wait function but is a custom method with a timer. The default sleep time is set to 5 milliseconds, which helps prevent higher CPU loads.
+window.sleep();
+//key b
+if(key_pressed(KEY_B)) 
+{
+if(!window.power_battery_exists()) window.tl_information("error","your pc does not have a battery system",false);
+else window.tl_information("battery system",window.battery_percent()+" percent "+(window.power_connected()?"charging ":"")+"battery",false);
+}
+if(key_pressed(KEY_O))
+{
+string[] o=window.tl_open("select folder");
+for(uint i=0;i<o.length();i++)
+{
+alert("the saved file is",o[i]);
+}
+}
+//track key of key_a, and it then generate random number If pressed.
+if(key_pressed(KEY_A)) alert("oo","ahaha"+window.rand(1,500));
+//we use .close_program() function to exit.
+if(key_pressed(KEY_E)) window.close_program();
+// We use the .message function to display the current window title using the variable .window_title.
+if(key_pressed(KEY_T)) window.message("title","the current window title is "+window.window_title);
+}//while
+}//main

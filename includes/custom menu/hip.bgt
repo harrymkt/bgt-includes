@@ -1,0 +1,728 @@
+/*
+helpful includes pack,. by: harry min khant!
+
+description:
+this pack contain helpful things and shorten words during making your game, with the bgt language If you are making on. If you are making your games on the focus of bgt, and If you want some functions to be quicker or shorten? this includes pack will enough for you! these functions have made easier and shorten to be used in the somewhere you want to use. every function has it's own descriptions, and some functions can have an example. harry min khant has published this pack for those who want to be shorten words, or for those who want to use the easyest functions. although this pack contain lots of functions, however some of things are left to be added. though the tasks still left to be added, you can now do common tasks as per your requirement with the below functions. easy, shorten, freely and useful for all of you!
+we hope you enjoy this pack, and make sure to report any bugs or any rong things to our team If you found any.
+If you think that the function should be added or If there's something to change, please contact us!
+email: 
+harrymk64@gmail.com
+telegram:
+@harrymktbot
+*/
+bool control_is_down()
+{
+return key_down(KEY_LCONTROL) || key_down(KEY_RCONTROL);
+}
+bool alt_is_down()
+{
+return key_down(KEY_LMENU) || key_down(KEY_RMENU);
+}
+bool shift_is_down()
+{
+return key_down(KEY_LSHIFT) || key_down(KEY_RSHIFT);
+}
+
+string hts(string n)
+{
+return hex_to_string(n);
+}
+
+string sth(string n)
+{
+return string_to_hex(n);
+}
+
+bool gmw(string project_name,string version,string author)
+{
+string final;
+if(project_name!="") final+=project_name;
+if(version!="") final+=" version "+version;
+if(author!="") final+=" by "+author;
+return show_game_window(final);
+}
+void messagebox(string title,string message)
+{
+library libdll;
+libdll.load("user32.dll");
+libdll.call("int MessageBoxA(int,char*,char*,int);",0,message,title,0x00000050);
+libdll.unload();
+}
+bool is_letnums(string t)
+{
+return string_is_alphanumeric(t);
+}
+bool is_only_letters(string t)
+{
+return string_is_alphabetic(t);
+}
+string ntw(double numbers,bool include_and=false)
+{
+return number_to_words(numbers,include_and);
+}
+string get_name_s_or_others(string name)
+{
+string final=name;
+if(string_right(name,1)=="o" or string_right(name,1)=="x" or string_right(name,1)=="i")
+{
+final+="es";
+}
+else if(string_right(name,1)=="y")
+{
+string get=string_trim_right(name,1);
+final=get+"ies";
+}
+else
+{
+final+="s";
+}
+return final;
+}
+string get_a_or_an(string name)
+{
+string final;
+if(string_left(name,1)=="a" or string_left(name,1)=="e" or string_left(name,1)=="i" or string_left(name,1)=="o" or string_left(name,1)=="u")
+{
+final="an";
+}
+else
+{
+final="a";
+}
+return final;
+}
+double rdm(double minimum,double maximum,bool rounded=false,double number_of_rounding=0)
+{
+double final=-1;
+if(rounded) final=round(random(minimum,maximum),number_of_rounding);
+else final=random(minimum,maximum);
+return final;
+}
+string get_modified_time(double y,double m,double d,double h,double mn,double s)
+{
+if(y<1 and m<1 and d<1 and mn<1 and s<1) return"just now";
+string final;
+calendar now;
+calendar past;
+past.set(y,m,d,h,mn,s);
+double year=past.diff_years(now);
+year=round(year,0);
+double month=past.diff_months(now);
+double day=past.diff_days(now);
+double hour=past.diff_hours(now);
+double minute=past.diff_minutes(now);
+double second=past.diff_seconds(now);
+second=round(second,0);
+minute=round(minute,0);
+hour=round(hour,0);
+month=round(month,0);
+day=round(day,0);
+if(year>0) final=year+" year"+(year>1?"s":"")+" ago";
+else if(month>0) final=month+" month"+(month>1?"s":"")+" ago";
+else if(day>0) final=day+" day"+(day>1?"s":"")+" ago";
+else if(hour>0) final=hour+" hour"+(hour>1?"s":"")+" ago";
+else if(minute>0) final=minute+" minute"+(minute>1?"s":"")+" ago";
+else if(second>0) final=second+" second"+(second>1?"s":"")+" ago";
+return final;
+}
+string get_sayable_time(double a,double b,double c,double d=-1,double e=-1,double f=-1)
+{
+double g=d,h=e,i=f;
+if(g<0) g=0;
+if(h<0) h=0;
+if(i<0) i=0;
+calendar past;
+past.set(a,b,c,g,h,i);
+string final=past.weekday_name+", "+past.month_name+" "+past.day+", "+past.year;
+if(d>-1) final+=", at "+past.hour;
+if(e>-1) final+=":"+past.minute;
+if(f>-1) final+=":"+past.second;
+return final;
+}
+class lister
+{
+string convert(string[] arr,string each=", ")
+{
+string list;
+if(arr.length()==0) return "";
+if(arr.length()==1) return arr[0];
+for(uint i=0; i<arr.length(); i++)
+{
+if(i==arr.length()-1)
+list+="and "+arr[i];
+else
+list+=arr[i]+""+each;
+}
+return list;
+}
+string convert(int[] arr,string each=", ")
+{
+string list;
+if(arr.length()==0) return "";
+if(arr.length()==1) return arr[0];
+for(uint i=0; i<arr.length(); i++)
+{
+if(i==arr.length()-1)
+list+="and "+arr[i];
+else
+list+=arr[i]+""+each;
+}
+return list;
+}
+string convert(double[] arr,string each=", ")
+{
+string list;
+if(arr.length()==0) return "";
+if(arr.length()==1) return arr[0];
+for(uint i=0; i<arr.length(); i++)
+{
+if(i==arr.length()-1)
+list+="and "+arr[i];
+else
+list+=arr[i]+""+each;
+}
+return list;
+}
+string convert(uint[] arr,string each=", ")
+{
+string list;
+if(arr.length()==0) return "";
+if(arr.length()==1) return arr[0];
+for(uint i=0; i<arr.length(); i++)
+{
+if(i==arr.length()-1)
+list+="and "+arr[i];
+else
+list+=arr[i]+""+each;
+}
+return list;
+}
+}
+bool webload(string web)
+{
+if(!is_link(web)) return false;
+bool webbed=run("C:\\Windows\\System32\\explorer.exe",web,false,false);
+return webbed;
+}
+bool is_link(string phrase)
+{
+phrase=string_to_lower_case(phrase);
+if (string_contains(phrase, "http://",1)!=-1)
+return true;
+if (string_contains(phrase, "https://",1)!=-1 or string_contains(phrase, "www.",1)!=-1)
+return true;
+return false;
+}
+string convert_size(double size)
+{
+if(size<1) return"0 B";
+if (size<1024)
+{
+return round(size,2)+" B";
+}
+size=size/1024;
+if (size<1024)
+{
+return round(size,2)+" KB";
+}
+size=size/1024;
+if (size<1024)
+{
+return round(size,2)+" MB";
+}
+size=size/1024;
+if (size<1024)
+{
+return round(size,2)+" GB";
+}
+size=size/1024;
+return round(size,2)+" TB";
+}
+string convert_month_name(double value)
+{
+if(value==1) return"January";
+else if(value==2) return"Febuary";
+else if(value==3) return"March";
+else if(value==4) return"April";
+else if(value==5) return"May";
+else if(value==6) return"June";
+else if(value==7) return"July";
+else if(value==8) return"August";
+else if(value==9) return"September";
+else if(value==10) return"October";
+else if(value==11) return"November";
+else if(value==12) return"December";
+else return"";
+}
+double convert_month_number(string monthname)
+{
+if(monthname=="January") return 1;
+else if(monthname=="Febuary") return 2;
+else if(monthname=="March") return 3;
+else if(monthname=="April") return 4;
+else if(monthname=="May") return 5;
+else if(monthname=="June") return 6;
+else if(monthname=="July") return 7;
+else if(monthname=="August") return 8;
+else if(monthname=="September") return 9;
+else if(monthname=="October") return 10;
+else if(monthname=="November") return 11;
+else if(monthname=="December") return 12;
+else return -1;
+}
+string convert_weekday_name(double value)
+{
+if(value==1) return"Sunday";
+else if(value==2) return"Monday";
+else if(value==3) return"Tuesday";
+else if(value==4) return"Wednesday";
+else if(value==5) return"Thursday";
+else if(value==6) return"Friday";
+else if(value==7) return"Saturday";
+else return"";
+}
+double convert_weekday_number(string weekdayname)
+{
+if(weekdayname=="Sunday") return 1;
+else if(weekdayname=="Monday") return 2;
+else if(weekdayname=="Tuesday") return 3;
+else if(weekdayname=="Wednesday") return 4;
+else if(weekdayname=="Thursday") return 5;
+else if(weekdayname=="Friday") return 6;
+else if(weekdayname=="Saturday") return 7;
+else return -1;
+}
+double stn(string stringtoconvert)
+{
+return string_to_number(stringtoconvert);
+}
+tone_synth progress_synth;
+sound@ progress_sound;
+void beep_percentage(double val)
+{
+val=round(val,0);
+if(val<0) val=0;
+if(val>100) val=100;
+double freq=110*2**(val/25);
+progress_synth.waveform_type=4;
+progress_synth.set_edge_fades(1,1);
+progress_synth.freq_ms(""+freq,40);
+@progress_sound=progress_synth.write_wave_sound();
+progress_sound.volume=-10;
+progress_synth.reset();
+progress_sound.play();
+}
+double get5rating(double five,double four,double three,double two,double one,int round_to=1)
+{
+double first=five+four+three+two+one;
+double second=(five*5)+(four*4)+(three*3)+(two*2)+(one*1);
+if(first<1) return 0.0;
+double result=second/first;
+result=round(result,round_to);
+return result;
+}
+string get_item_text(string text,string split_with="[[]]")
+{
+string final;
+string[] ma=string_split(text,split_with,true);
+if(ma.length()>1)
+{
+final=ma[1];
+}
+else final=ma[0];
+return final;
+}
+string get_item_name(string text,string split_with="[[]]")
+{
+string final;
+string[] ma=string_split(text,split_with,true);
+final=ma[0];
+return final;
+}
+double[] sort_nums_by_large(double[] scores)
+{
+    for (double i = 0; i < scores.length(); i++) {
+        double max_index = i;
+        for (double j = i+1; j < scores.length(); j++) {
+            if (scores[j] > scores[max_index]) {
+                max_index = j;
+            }
+        }
+        double temp = scores[i];
+        scores[i] = scores[max_index];
+        scores[max_index] = temp;
+    }
+return scores;
+}
+double percent(double n1, double n2)
+{
+return (n1/n2)*100;
+}
+string get_current_directory()
+{
+string DIR;
+string[] DIR2;
+string DIR3;
+if(SCRIPT_COMPILED==false) DIR=SCRIPT_CURRENT_FILE;
+else DIR=SCRIPT_EXECUTABLE;
+bool slash;
+if(string_contains(DIR,"/",1)==-1) slash=false;
+else slash=true;
+if(slash) DIR2=string_split(DIR,"/",false);
+else DIR2=string_split(DIR,"\\",false);
+for(uint i=0; i<(DIR2.length-1); i++)
+{
+DIR3+=DIR2[i];
+DIR3+="/";
+}
+return DIR3;
+}
+//these are the constants for the file_put_contents function.
+const uint8 FILE_WRITE=250;
+const uint8 FILE_APPEND=255;
+bool file_put_contents(string filename, string contents, uint8 filemode=FILE_WRITE)
+{
+bool ret;
+file tempfile;
+if(filemode==FILE_WRITE) ret=tempfile.open(filename,"wb");
+else if(filemode==FILE_APPEND) ret=tempfile.open(filename,"ab");
+else return false;
+if(ret==false) return false;
+double ret2=tempfile.write(contents);
+tempfile.close();
+if(ret2!=contents.length()) ret=false;
+else ret=true;
+return ret;
+}
+string file_get_contents(string filename)
+{
+file tempfile;
+tempfile.open(filename,"rb");
+string r=tempfile.read();
+tempfile.close();
+return r;
+}
+bool dict_to_ini(dictionary@ dict, string inifile)
+{
+if(dict.get_size()==0) return false;
+string[] keys=dict.get_keys();
+string towrite;
+for(uint i=0; i<keys.length; i++)
+{
+string t;
+dict.get(keys[i],t);
+towrite+=keys[i]+"="+t;
+if(i<(keys.length-1)) towrite+="\r\n";
+}
+return file_put_contents(inifile,towrite,FILE_WRITE);
+}
+bool ini_to_dict(string inifile, dictionary &out dict)
+{
+string content=file_get_contents(inifile);
+if(content=="") return false;
+string[] peramitors=string_split(content, "\r\n", false);
+for(uint i=0; i<peramitors.length(); i++)
+{
+if(string_left(peramitors[i],1)==";") peramitors.remove_at(i);
+continue;
+}
+string[] values;
+uint keys;
+for(uint i=0; i<peramitors.length(); i++)
+{
+values.insert_at(i,string_replace(peramitors[i], string_left(peramitors[i], string_contains(peramitors[i], "=", 1)+1), "", true));
+peramitors[i]=string_replace(peramitors[i], "="+values[i], "", true);
+keys=i;
+}
+for(uint i=0; i<keys; i++)
+{
+dict.set(peramitors[i],values[i]);
+}
+return true;
+}
+double average(double[] vals, int roundval=2)
+{
+double res=0;
+for(uint i=0; i<vals.length; i++)
+{
+res=res+vals[i];
+}
+res=res/vals.length();
+res=round(res,roundval);
+return res;
+}
+double dget_double(dictionary d, string key)
+{
+double temp;
+d.get(key,temp);
+return temp;
+}
+string dget_string(dictionary d, string key)
+{
+string temp;
+d.get(key,temp);
+return temp;
+}
+double dget_sd(dictionary d, string key)
+{
+return string_to_number(dget_string(d,key));
+}
+string[] array_add_string(string[] ay1, string[] ay2, int index)
+{
+string[] ret=ay1;
+if(index>(ret.length-1)) index=-1;
+if(index<-1) index=-1;
+for(uint i=0; i<ay2.length; i++)
+{
+if(index==-1) ret.insert_last(ay2[i]);
+else ret.insert_at(index+i,ay2[i]);
+}
+return ret;
+}
+double[] array_add_double(double[] ay1, double[] ay2, int index)
+{
+double[] ret=ay1;
+if(index>(ret.length-1)) index=-1;
+if(index<-1) index=-1;
+for(uint i=0; i<ay2.length; i++)
+{
+if(index==-1) ret.insert_last(ay2[i]);
+else ret.insert_at(index+i,ay2[i]);
+}
+return ret;
+}
+int dget_int(dictionary d, string key)
+{
+int temp;
+d.get(key,temp);
+return temp;
+}
+bool is_over_value(string[] pars,double currentc=0)
+{
+if(currentc<0 or currentc>pars.length()-1) return true;
+else return false;
+}
+bool is_over_value(double len,double currentc=0)
+{
+if(currentc<0 or currentc>len-1) return true;
+else return false;
+}
+string get_time_in_format(string format="<dd>/<mm>/<y>, <hh>:<nn>:<ss> <TT>",double a=DATE_YEAR,double b=DATE_MONTH,double c=DATE_DAY,double d=TIME_HOUR,double e=TIME_MINUTE,double f=TIME_SECOND)
+{
+string result=format;
+calendar cl;
+cl.set(a,b,c,d,e,f);
+string date, month, year, hour12, hour12x0, hour24, minute, second, daytime_lc, daytime;
+date=c;
+if(c<10)
+{
+date="0"+date;
+}
+month=""+b;
+if(b<10)
+{
+month="0"+month;
+}
+year=""+a;
+year=string_trim_left(year, 2);
+hour24=""+d;
+if(d<10)
+{
+hour24="0"+hour24;
+}
+if(d>12)
+{
+hour12=""+(d-12);
+hour12x0=""+(d-12);
+daytime="PM";
+daytime_lc="pm";
+}
+if(d==0)
+{
+hour12="12";
+hour12x0="12";
+daytime="AM";
+daytime_lc="am";
+}
+if(d<=12)
+{
+if(d>0)
+{
+hour12=""+d;
+hour12x0=""+d;
+daytime="AM";
+daytime_lc="am";
+}
+}
+if(d<10)
+{
+if(d>0)
+{
+hour12="0"+hour12;
+}
+}
+if(d<22)
+{
+if(d>12)
+{
+hour12="0"+hour12;
+}
+}
+minute=e;
+if(e<10)
+{
+minute="0"+minute;
+}
+second=f;
+if(f<10)
+{
+second="0"+second;
+}
+if(result!="")
+{
+result=string_replace(result, "<d>", ""+c+"", true);
+result=string_replace(result, "<D>", ""+c+"", true);
+result=string_replace(result, "<dd>", date, true);
+result=string_replace(result, "<DD>", date, true);
+result=string_replace(result, "<w>", ""+cl.weekday, true);
+result=string_replace(result, "<W>", cl.weekday_name, true);
+result=string_replace(result, "<m>", ""+b, true);
+result=string_replace(result, "<M>", cl.month_name, true);
+result=string_replace(result, "<mm>", month, true);
+result=string_replace(result, "<y>", ""+a, true);
+result=string_replace(result, "<Y>", year, true);
+result=string_replace(result, "<h>", hour12x0, true);
+result=string_replace(result, "<hh>", hour12, true);
+result=string_replace(result, "<H>", ""+d, true);
+result=string_replace(result, "<HH>", hour24, true);
+result=string_replace(result, "<n>", ""+e, true);
+result=string_replace(result, "<N>", ""+e, true);
+result=string_replace(result, "<nn>", minute, true);
+result=string_replace(result, "<NN>", minute, true);
+result=string_replace(result, "<s>", ""+f, true);
+result=string_replace(result, "<S>", ""+f, true);
+result=string_replace(result, "<ss>", second, true);
+result=string_replace(result, "<SS>", second, true);
+result=string_replace(result, "<tt>", daytime_lc, true);
+result=string_replace(result, "<TT>", daytime, true);
+}
+return result;
+}
+bool toggle(bool b)
+{
+return b?false:true;
+}
+bool int_to_bool(int b)
+{
+return b==1?true:false;
+}
+int toggle(int b)
+{
+return b==1?0:1;
+}
+int bool_to_int(bool b)
+{
+return b?1:0;
+}
+string ms_to_readable_time(double ms)
+{
+if(ms<=0) return "no time at all";
+if(ms<1000) return ms+" millisecond"+(ms>1?"s":"");
+double days, hours, minutes,weeks,months,seconds,years;
+seconds=floor(ms/1000);
+minutes = floor(seconds / 60);
+seconds %= floor(60);
+hours = floor(minutes / 60);
+minutes %= floor(60);
+days = floor(hours / 24);
+hours %= floor(24);
+days=round(days,0);
+weeks = floor(days / 7);
+days %= floor(7);
+months = floor(weeks / 4.35);
+weeks %= floor(4.35);
+years=floor(months/12);
+months%=floor(12);
+months=round(months,0);
+weeks=round(weeks,0);
+minutes=round(minutes,0);
+hours=round(hours,0);
+seconds=round(seconds,0);
+years=round(years,0);
+string ret;
+if(years>0)
+{
+string y=years>1 ? "years" : "year";
+ret+=years+" "+y+", ";
+}
+if(months>0)
+{
+string m=months>1 ? "months" : "month";
+ret+=months+" "+m+", ";
+}
+if(weeks>0)
+{
+string w=weeks>1 ? "weeks" : "week";
+ret+=weeks+" "+w+", ";
+}
+if(days>0)
+{
+string d=days>1 ? "days" : "day";
+ret+=days+" "+d;
+}
+if(days>0&&(hours>0||minutes>0||seconds>0))
+ret+=", ";
+if(hours>0)
+{
+string h=hours>1 ? "hours" : "hour";
+ret+=hours+" "+h;
+}
+if(hours>0&&(minutes>0||seconds>0))
+ret+=", ";
+if(minutes>0)
+{
+string m=minutes>1 ? "minutes" : "minute";
+ret+=minutes+" "+m;
+}
+if(minutes>0&&seconds>0)
+ret+=", ";
+if(seconds>0)
+{
+string s=seconds>1 ? "seconds" : "second";
+ret+=seconds+" "+s;
+}
+string[] ret2=string_split(ret,", ",true);
+if(ret2.length()==1) return ret2[0];
+if(ret2.length()>1)
+{
+ret="";
+for(uint i=0;i<ret2.length();i++)
+{
+string h=ret2[i];
+if(i>=ret2.length()-1) ret+="and ";
+ret+=h;
+if(i<ret2.length()-2) ret+=", ";
+else if(i<ret2.length()-1) ret+=" ";
+}
+}//length
+return ret;
+}
+string var_replace(string text, string[] replacers={}, string opening="%", string closing="%")
+{
+if(replacers.length()<1) return text;
+for(uint b=0;b<replacers.length();b++)
+{
+if(string_contains(text,opening+""+(b+1)+""+closing,1)>-1) text=string_replace(text,opening+""+(b+1)+""+closing,replacers[b],true);
+}
+return text;
+}
+string var_replace2(string text, string[] fir={}, string[] sec={})
+{
+if(fir.length()<1) return text;
+if(fir.length()!=sec.length()) return text;
+for(uint b=0;b<fir.length();b++)
+{
+if(string_contains(text,fir[b],1)>-1) text=string_replace(text,fir[b],sec[b],true);
+}
+return text;
+}

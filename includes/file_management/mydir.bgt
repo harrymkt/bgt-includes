@@ -1,0 +1,48 @@
+/*
+directory management class:
+
+this class provides an easy way to manage your one or more directories by calling this class without typeing a long codes from the bgt itself.
+for instance, you can declare it like:
+
+#include"mydir.bgt"
+mydir d;
+void main()
+{
+alert("hi","I'm now trying to delete a directory, please wait...");
+bool suc=d.delete("test");
+alert((suc?"success":"failed"),(suc?"the directory has been deleted":"the directory could not be deleted"));
+exit();
+}
+
+well, you see. you are no longer need to type directory_delete or having remembery for that.
+mainly created by harry min khant.
+If you either wish to support us or need to contact us, visit the website below.
+harry.free.nf
+
+lets go directly to the functions and of course, the methods and parameters!
+*/
+class mydir
+{
+//nothing parameters!
+//below are functions, lets check them one by one!
+bool delete(string dirname)
+{
+//this function deletes a given directory If the directory exists. in case of failure, will return false.
+return directory_delete(dirname);
+}
+bool exists(string dirname)
+{
+//this function determent whether the given directory exists or not.
+return directory_exists(dirname);
+}
+bool create(string dirname)
+{
+//this function creates the given directories.
+return directory_create(dirname);
+}
+string[] list(string search)
+{
+//this lists all the directories matching the search term.
+return find_directories(search);
+}
+}//end class

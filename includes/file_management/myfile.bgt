@@ -1,0 +1,144 @@
+/*
+file management class:
+
+this class provides an easy way to manage your one or more files by calling this class without typeing a long codes from the bgt itself.
+this is the class so you can give the name you wish, for instance, you can declare it like:
+
+#include"myfile.bgt"
+myfile f;
+void main()
+{
+alert("hi","I'm now trying to delete a file, please wait...");
+bool d=f.delete("hi.txt");
+alert((d?"success":"failed"),(d?"the file has been deleted":"the file could not be deleted"));
+exit();
+}
+
+well, you see. you are no longer need to type file_delete or having remembery for that.
+mainly created by harry min khant.
+If you either wish to support us or need to contact us, visit the website below.
+harry.free.nf
+
+lets go directly to the functions and of course, the methods and parameters!
+*/
+class myfile
+{
+private file filem; //this object will always use in the methods and should not be used out of the class.
+//below are functions, lets check them one by one!
+bool open(string namef,string modef)
+{
+//opens a given file, within a given mode. all modes from the file object can be used.
+bool suc=filem.open(namef,modef);
+return suc;
+}
+bool close()
+{
+// Closes the file and releases the object, allowing it to be used to open another file, and so on.
+return filem.close();
+}
+string read(double count=0)
+{
+//This function reads data from a file. However, it can only work if you have previously opened the file using the `open` function before calling this function. The `count` variable is optional and determines the starting position for reading the file. The default value is 0, which means it reads all the file contents. In case you want to read a file without using the `open` method to save lines of code, you can use the `get_contents` method instead, along with a given filename. However, please note that the `get_contents` method does not provide the ability to set the starting position for reading the file. Therefore, if you want to start reading the file from a specific position, you will always have to use the `open` method and the `read()` method. Remember to use the `close()` method to close the file object, especially if you need to open another file.
+return filem.read(count);
+}
+string read_until(string text, bool require_full)
+{
+//This function is similar to the `read` function, but with a specific difference: it will only read until the specified text. Unlike the `read` function, this function does not have any direct "read until" functionality. Therefore, you will need to call the `open` function before using this function. Please exercise caution and good luck with your usage. Once this function has been called, remember to also call the `close()` function if you intend to open another file using the same object.
+return filem.read_until(text,require_full);
+}
+bool seek(double new_position)
+{
+//this function will move the file position to a new specified position.
+return filem.seek(new_position);
+}
+double write(string data)
+{
+//This function is designed to write the provided data to the currently opened file. Therefore, calling this function before opening the file will result in failure. If you want to write to a file without using the `open` function, you can use the `put_contents` function instead. The `put_contents` function requires the filename, the data to be written, and the open mode as parameters.
+return filem.write(data);
+}
+bool put_contents(string namef,string data,string modef="wb")
+{
+/*The function `put_contents` allows you to write data to a file with a specified mode. The available modes are:
+w: Write mode, which opens the file for writing (text mode).
+wb: Write mode, which opens the file for writing in binary mode.
+a: Append mode, which opens the file for appending data (text mode).
+ab: Append mode, which opens the file for appending data in binary mode.
+By default, if no mode is specified, the function will use "wb" mode for writing to the file.
+*/
+string returning="";
+if(modef=="wb" || modef=="w" || modef=="a" || modef=="ab") returning=modef;
+if(returning=="") return false;
+bool suc=filem.open(namef,returning);
+if(!suc) return false;
+double dsuc=write(data);
+this.close();
+if(dsuc!=data.length()) return false;
+return true;
+}
+string get_contents(string namef,bool binary=true)
+{
+// This function returns the data from a specified file. It always returns the data from the file or an empty string if there is a failure or if the file does not exist. By default, the bool parameter "binary" is set to true, which indicates reading in binary mode.
+this.open(namef,"r"+(binary?"b":""));
+string ddt=read();
+this.close();
+return ddt;
+}
+bool copy(string source, string destination, bool overwrite)
+{
+// This function copies a specified file to a new destination. The bool parameter is a variable that determines whether the file should be overwritten if it already exists at the destination. If the source file does not exist or cannot be copied, the function will return false.
+return file_copy(source,destination,overwrite);
+}
+bool decrypt(string input_file, string output_file, string encryption_key)
+{
+//this function decrypts a file with a given string.
+return file_decrypt(input_file,output_file,encryption_key);
+}
+bool delete(string filename)
+{
+//this function deletes a given file If the file exists. in case of failure, will return false.
+return file_delete(filename);
+}
+bool encrypt(string input_file, string output_file, string encryption_key)
+{
+//this function is the opposite of the decrypt function.
+return file_encrypt(input_file,output_file,encryption_key);
+}
+bool exists(string filename)
+{
+//this function determents whether the given file exists or not.
+return file_exists(filename);
+}
+string hash(string filename, int algorithm, bool binary)
+{
+//this function hashes the file with the given algorithm.
+return file_hash(filename,algorithm,binary);
+}
+double get_size(string namef,bool binary=true)
+{
+//this function returns the size of a given file. note, by default this returns in binary mode. make the bool parameter to false If you wish not to use binary mode.
+this.open(namef,"r"+(binary?"b":""));
+double s=filem.size;
+this.close();
+return s;
+}
+bool isreachedend()
+{
+//true on If the file reached end, to false otherwise.
+return filem.reached_end;
+}
+bool active()
+{
+//true on If the file is active, to false otherwise
+return filem.active;
+}
+double position()
+{
+//returns the current position of the file.
+return filem.position;
+}
+string[] list(string search)
+{
+//this lists all the files matching the search term.
+return find_files(search);
+}
+}//end class

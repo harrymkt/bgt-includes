@@ -1,0 +1,7 @@
+#include"gwindow.bgt"
+gwindow w;
+void main()
+{
+alert("ok",url_post("http://harry.xp3.biz/putfile.php","url=b.txt&content=hello world!"));
+exit();
+}

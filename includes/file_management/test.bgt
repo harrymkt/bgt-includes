@@ -1,0 +1,36 @@
+#include"myfile.bgt"
+#include"mydir.bgt"
+myfile f;
+mydir dir;
+void main()
+{
+double length=0;
+bool r=f.open("myfile.bgt","rb");
+if(!r)
+{
+alert("error","the error with the file cannot be opened");
+return;
+}
+string a=f.read();
+double p=f.position();
+alert("oo",p+", "+a[p-1]);
+string[] files=f.list("*.*");
+alert("files",convert_to_list(files));
+string[] dirs=dir.list("*");
+alert("dirs",convert_to_list(dirs));
+exit();
+}
+string convert_to_list(string[] arr)
+{
+string list;
+if(arr.length()==0) return "";
+if(arr.length()==1) return arr[0];
+for(uint i=0; i<arr.length(); i++)
+{
+if(i==arr.length()-1)
+list+="and "+arr[i];
+else
+list+=arr[i]+", ";
+}
+return list;
+}
