@@ -12,7 +12,7 @@ show_game_window("ok?");
 wait(500);
 navtime.restart();
 form.create_window("test form",false);
-int a=form.create_input_box("type the username","","",100);
+int a=form.create_input_box("type the user&name","","null",100);
 form.set_description(a,"required");
 form.set_only_allowed_characters(a," \\=/,`~!@#$%^&*()+|[]{}'\";:?>A","nooooooooooooooo, cannot type this character");
 form.set_require(a, true, "name is required haha!");

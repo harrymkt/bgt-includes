@@ -2619,7 +2619,11 @@ if(key_pressed(KEY_UP))
 if(multiline==false)
 {
 if(text!="")
-speak(text);
+{
+if(password_mask!="" && !show_password)
+speak(text.length()+" "+password_mask);
+else speak(text);
+}
 else
 speak("blank");
 return;
@@ -2638,7 +2642,11 @@ if(key_pressed(KEY_DOWN))
 if(multiline==false)
 {
 if(text!="")
-speak(text);
+{
+if(password_mask!="" && !show_password)
+speak(text.length()+" "+password_mask);
+else speak(text);
+}
 else
 speak("blank");
 return;
@@ -3831,7 +3839,7 @@ checked=true;
 }
 string find_appropriate_character(string original_character)
 {
-if(password_mask=="")
+if(password_mask=="" or show_password)
 {
 return original_character;
 }
