@@ -12,7 +12,7 @@ custom_menu c;
 sound test;
 void main()
 {
-show_game_window("ngt menu test");
+show_game_window("custom menu test");
 //reset with the parameter true is necessary before doing things in the menu.
 c.reset(true);
 c.clicksound="snd/menuclick.ogg";

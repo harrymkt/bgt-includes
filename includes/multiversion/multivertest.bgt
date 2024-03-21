@@ -1,3 +1,6 @@
+/*
+this script contains the test for `multiversion` object. this includes all possible functions.
+*/
 #include"multiversion.bgt"
 void main()
 {

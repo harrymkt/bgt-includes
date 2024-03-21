@@ -21,8 +21,8 @@ class url
 {
 int error=0;
 string reason="";
-private string getfile="http://harrymk.xp3.biz/getfile.php";
-private string putfile="http://harrymk.xp3.biz/putfile.php";
+private string getfile="http://yoursite.domain/getfile.php";
+private string putfile="http://yoursite.domain/putfile.php";
 void reset()
 {
 this.error=0;
