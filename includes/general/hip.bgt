@@ -183,6 +183,20 @@ list+=arr[i]+""+each;
 }
 return list;
 }
+string convert(float[] arr,string each=", ")
+{
+string list;
+if(arr.length()==0) return "";
+if(arr.length()==1) return arr[0];
+for(uint i=0; i<arr.length(); i++)
+{
+if(i==arr.length()-1)
+list+="and "+arr[i];
+else
+list+=arr[i]+""+each;
+}
+return list;
+}
 string convert(uint[] arr,string each=", ")
 {
 string list;
@@ -624,7 +638,7 @@ int bool_to_int(bool b)
 {
 return b?1:0;
 }
-string ms_to_readable_time(double ms)
+string ms_to_readable_time(double ms, int round_year_to=0, int round_month_to=0, int round_week_to=0, int round_day_to=0, int round_hour_to=0, int round_minute_to=0, int round_second_to=0)
 {
 if(ms<=0) return "no time at all";
 if(ms<1000) return ms+" millisecond"+(ms>1?"s":"");
@@ -636,19 +650,19 @@ hours = floor(minutes / 60);
 minutes %= floor(60);
 days = floor(hours / 24);
 hours %= floor(24);
-days=round(days,0);
+days=round(days,round_day_to);
 weeks = floor(days / 7);
 days %= floor(7);
 months = floor(weeks / 4.35);
 weeks %= floor(4.35);
 years=floor(months/12);
 months%=floor(12);
-months=round(months,0);
-weeks=round(weeks,0);
-minutes=round(minutes,0);
-hours=round(hours,0);
-seconds=round(seconds,0);
-years=round(years,0);
+months=round(months,round_month_to);
+weeks=round(weeks,round_week_to);
+minutes=round(minutes,round_minute_to);
+hours=round(hours,round_hour_to);
+seconds=round(seconds,round_second_to);
+years=round(years,round_year_to);
 string ret;
 if(years>0)
 {

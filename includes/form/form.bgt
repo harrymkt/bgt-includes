@@ -2038,6 +2038,7 @@ c_form[counter].hotkey_letter="";
 c_form[counter].hotkey=-1;
 continue;
 }
+if(get_current_focus()==counter) continue;
 if((key_down(KEY_LMENU) or key_down(KEY_RMENU))&&(key_pressed(c_form[counter].hotkey)))
 {
 if(c_form[counter].autopress) c_form[counter].just_activate();
